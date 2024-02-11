@@ -1,0 +1,3 @@
+on(release) { // 단추가 눌렸을 경우 나감
+	fscommand("quit", "true");
+} // on

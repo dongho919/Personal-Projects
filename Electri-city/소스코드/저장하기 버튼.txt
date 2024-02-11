@@ -1,0 +1,25 @@
+on (release) { // 눌렸을 경우 데이터를 저장한다.
+	user = SharedObject.getLocal("dongho919_cookie", "/");
+	user.clear();
+	user.data.blocks_cf=new Array(blocks.length);
+	user.data.blocks_water=new Array(blocks.length);
+	user.data.blocks_wv=new Array(blocks.length);
+	user.data.money = money;
+	user.data.elec = elec;
+	user.data.wpol = wpol;
+	user.data.apol = apol;
+	user.data.rpol = rpol;
+	user.data.food = food;
+	user.data.coal = coal;
+	user.data.ura = ura;
+	user.data.wind = wind;
+	for(a=0; a<blocks.length; a++) { // 블록의 배열을 쿠키에 저장한다.
+		user.data.blocks_cf[a]=blocks[a]._currentframe;
+		user.data.blocks_water[a]=blocks[a].water;
+		user.data.blocks_wv[a]=blocks[a].wv;
+	} // for
+	user.flush();
+	trace(user.data.blocks_cf);
+	trace(user.data.blocks_water);
+	trace(user.data.blocks_wv);
+} // on

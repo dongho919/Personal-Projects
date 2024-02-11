@@ -1,0 +1,245 @@
+on(release) { // 무비클립이 눌렸을 경우
+	if(_root.money>=_root.con[_root.build*3]) { // 건설 또는 파괴하려는 비용보다 돈이 많을 때
+		if(_root.build==0 && _currentframe!=1) { // 파괴하려고 할 때 땅에 무언가가 지어져 있으면 파괴하고 돈을 인출한다.
+			_root.money-=_root.con[_root.build*3];
+			gotoAndStop(_root.con[_root.build*3+1]);
+			water=_root.con[_root.build*3+2];
+		} else if(_root.build!=0 && _currentframe==1) { // 건설하려고 할 때 현재 땅에 아무것도 없으면 건설하고 돈을 인출한다. 
+			_root.money-=_root.con[_root.build*3];
+			gotoAndStop(_root.con[_root.build*3+1]);
+			water=_root.con[_root.build*3+2];
+		} // if
+	} // if
+} // on
+onClipEvent(enterFrame) { // 계속 실행하는 부분
+	if(value%15>=2 && value>15 && value<210) { // 자신이 중앙 부분의 블록일 때
+		block=0;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[value-16].water==false && _root.blocks[value+14].water==false) {
+			pipe=10;
+		} else if((_root.blocks[value-2].water==false && _root.blocks[value].water==false) && (_root.blocks[value-16].water==true || _root.blocks[value+14].water==true)) {
+			pipe=11;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==false && _root.blocks[value-16].water==true && _root.blocks[value+14].water==false) {
+			pipe=12;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==false && _root.blocks[value-16].water==false && _root.blocks[value+14].water==true) {
+			pipe=13;
+		} else if(_root.blocks[value-2].water==false && _root.blocks[value].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==false) {
+			pipe=14;
+		} else if(_root.blocks[value-2].water==false && _root.blocks[value].water==true && _root.blocks[value-16].water==false && _root.blocks[value+14].water==true) {
+			pipe=15;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==false && _root.blocks[value-16].water==true && _root.blocks[value+14].water==true) {
+			pipe=16;
+		} else if(_root.blocks[value-2].water==false && _root.blocks[value].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==true) {
+			pipe=17;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==true && _root.blocks[value-16].water==false && _root.blocks[value+14].water==true) {
+			pipe=18;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==false) {
+			pipe=19;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==true) {
+			pipe=20;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} else if(value%15==1 && value>15 && value<210) { // 자신이 좌측 중앙의 블록일 때
+		block=1;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[value-16].water==false && _root.blocks[value+14].water==false) {
+			pipe=10;
+		} else if(_root.blocks[value].water==false && (_root.blocks[value-16].water==true || _root.blocks[value+14].water==true)) {
+			pipe=11;
+		} else if(_root.blocks[value].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==false) {
+			pipe=14;
+		} else if(_root.blocks[value].water==true && _root.blocks[value-16].water==false && _root.blocks[value+14].water==true) {
+			pipe=15;
+		} else if(_root.blocks[value].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==true) {
+			pipe=17;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_currentframe>=10 && _currentframe<=20) && (_root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} else if(value%15==0 && value>15 && value<=210) { // 자신이 우측 중앙의 블록일 때
+		block=2;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[value-16].water==false && _root.blocks[value+14].water==false) {
+			pipe=10;
+		} else if(_root.blocks[value-2].water==false && (_root.blocks[value-16].water==true || _root.blocks[value+14].water==true)) {
+			pipe=11;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==false) {
+			pipe=12;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value-16].water==false && _root.blocks[value+14].water==true) {
+			pipe=13;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value-16].water==true && _root.blocks[value+14].water==true) {
+			pipe=16;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_currentframe>=10 && _currentframe<=20) && (_root.blocks[value-2].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} else if(value%15>=2 && value<15) { // 자신이 중앙 상단의 블록일 때
+		block=3;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[value+14].water==false) {
+			pipe=10;
+		} else if((_root.blocks[value-2].water==false && _root.blocks[value].water==false) && _root.blocks[value+14].water==true) {
+			pipe=11;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==false && _root.blocks[value+14].water==true) {
+			pipe=13;
+		} else if(_root.blocks[value-2].water==false && _root.blocks[value].water==true && _root.blocks[value+14].water==true) {
+			pipe=15;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==true && _root.blocks[value+14].water==true) {
+			pipe=18;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_currentframe>=10 && _currentframe<=20) && (_root.blocks[value-2].water==true || _root.blocks[value].water==true || _root.blocks[value+14].water==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} else if(value%15>=2 && value>210) { // 자신이 중앙 하단의 블록일 때
+		block=4;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[value-16].water==false) {
+			pipe=10;
+		} else if((_root.blocks[value-2].water==false && _root.blocks[value].water==false) && _root.blocks[value-16].water==true) {
+			pipe=11;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==false && _root.blocks[value-16].water==true) {
+			pipe=12;
+		} else if(_root.blocks[value-2].water==false && _root.blocks[value].water==true && _root.blocks[value-16].water==true) {
+			pipe=14;
+		} else if(_root.blocks[value-2].water==true && _root.blocks[value].water==true && _root.blocks[value-16].water==true) {
+			pipe=19;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_currentframe>=10 && _currentframe<=20) && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} else if(value==1) { // 자신이 좌측 상단의 블록일 때
+		block=5;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[15].water==false) {
+			pipe=10;
+		} else if(_root.blocks[1].water==false && _root.blocks[15].water==true) {
+			pipe=11;
+		} else if(_root.blocks[1].water==true && _root.blocks[15].water==true) {
+			pipe=15;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_root.blocks[1].wv==true || _root.blocks[15].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} else if(value==15) { // 자신이 우측 상단의 블록일 때
+		block=6;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[29].water==false) {
+			pipe=10;
+		} else if(_root.blocks[13].water==false && _root.blocks[29].water==true) {
+			pipe=11;
+		} else if(_root.blocks[13].water==true && _root.blocks[29].water==true) {
+			pipe=13;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_root.blocks[13].wv==true || _root.blocks[29].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} else if(value==211) { // 자신이 좌측 하단의 블록일 때
+		block=7;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[195].water==false) {
+			pipe=10;
+		} else if(_root.blocks[195].water==true && _root.blocks[211].water==false) {
+			pipe=11;
+		} else if(_root.blocks[195].water==true && _root.blocks[211].water==true) {
+			pipe=14;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_root.blolcks[195].wv==true || _root.blocks[211].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의  wv를 결정한다.
+	} else if(value==225) { // 자신이 우측 하단의 블록일 때
+		block=8;
+		
+		/* 여기서부터 주변의 땅 블록의 water를 체크하여 파이프가
+		 * 설치될 때 어떤 모양으로 설치되게 할 것인지 결정한다.
+		 */
+		if(_root.blocks[209].water==false) {
+			pipe=10;
+		} else if(_root.blocks[209].water==true && _root.blocks[223].water==false) {
+			pipe=11;
+		} else if(_root.blocks[209].water==true && _root.blocks[223].water==true) {
+			pipe=12;
+		} // if
+		wv=(_currentframe>=10 && _currentframe<=20) && (_root.blocks[209].wv==true || _root.blocks[223].wv==true); // 자신이 파이프일 때, 주변의 wv를 체크하여 자신의 wv를 결정한다.
+	} // if
+	if(_currentframe==2) { // 자신이 바이오매스 발전소일 때
+		if(_root.food>0 && _root.apol<100) { // 음식물쓰레기가 있고 대기오염이 100 미만이면
+			if((block==0 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==1 && (_root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==2 && (_root.blocks[value-2].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==3 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value+14].wv==true)) || (block==4 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true)) || (block==5 && (_root.blocks[1].wv==true || _root.blocks[15].wv==true)) || (block==6 && (_root.blocks[13].wv==true || _root.blocks[29].wv==true)) || (block==7 && (_root.blocks[211].wv==true || _root.blocks[195].wv==true)) || (block==8 && (_root.blocks[223].wv==true || _root.blocks[209].wv==true))) { // 물이 공급될 때 발전을 한다.
+				_root.apol+=0.005;
+				_root.money+=12;
+				_root.elec+=6;
+				_root.food--;
+			} // if
+		} // if
+	} else if(_currentframe==3) { // 자신이 풍력발전소일 때, 풍속에 비례하여 전기를 생산한다.
+		_root.money+=Math.round(_root.wind*0.8);
+		_root.elec+=_root.wind*0.4;
+	} else if(_currentframe==4) { // 자신이 태양광발전소일 때, 낮밤에 따라 전기 생산량을 달리한다.
+		_root.money+=Math.round((180-Math.abs(_root.sphr.sky._rotation))*0.01);
+		_root.elec+=(180-Math.abs(_root.sphr.sky._rotation))*0.005;
+	} else if(_currentframe==5) { // 자신이 지열발전소일 때
+		if((block==0 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==1 && (_root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==2 && (_root.blocks[value-2].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==3 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value+14].wv==true)) || (block==4 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true)) || (block==5 && (_root.blocks[1].wv==true || _root.blocks[15].wv==true)) || (block==6 && (_root.blocks[13].wv==true || _root.blocks[29].wv==true)) || (block==7 && (_root.blocks[211].wv==true || _root.blocks[195].wv==true)) || (block==8 && (_root.blocks[223].wv==true || _root.blocks[209].wv==true))) { // 물이 공급될 때, 전기를 생산한다.
+			_root.money+=30;
+			_root.elec+=15;
+		} // if
+	} else if(_currentframe==6) { // 자신이 수력발전소일 때
+		if((block==0 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==1 && (_root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==2 && (_root.blocks[value-2].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==3 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value+14].wv==true)) || (block==4 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true)) || (block==5 && (_root.blocks[1].wv==true || _root.blocks[15].wv==true)) || (block==6 && (_root.blocks[13].wv==true || _root.blocks[29].wv==true)) || (block==7 && (_root.blocks[211].wv==true || _root.blocks[195].wv==true)) || (block==8 && (_root.blocks[223].wv==true || _root.blocks[209].wv==true))) { // 물이 공급될 때, 전기를 생산한다.
+			_root.money+=40;
+			_root.elec+=20;
+		} // if
+	} else if(_currentframe==7) { // 자신이 화력발전소일 때
+		if(_root.coal>0 && _root.apol<100 && _root.wpol<100) { // 석탄이 있고 대기오염과 수질오염이 100 미만이면
+			if((block==0 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==1 && (_root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==2 && (_root.blocks[value-2].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==3 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value+14].wv==true)) || (block==4 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true)) || (block==5 && (_root.blocks[1].wv==true || _root.blocks[15].wv==true)) || (block==6 && (_root.blocks[13].wv==true || _root.blocks[29].wv==true)) || (block==7 && (_root.blocks[211].wv==true || _root.blocks[195].wv==true)) || (block==8 && (_root.blocks[223].wv==true || _root.blocks[209].wv==true))) { // 물이 공급될 때, 전기를 생산한다.
+				_root.apol+=0.02;
+				_root.wpol+=0.02;
+				_root.money+=80;
+				_root.elec+=40;
+				_root.coal--;
+			} // if
+		} // if
+	} else if(_currentframe==8) { // 자신이 원자력발전소일 때
+		if(_root.ura>0 && _root.rpol<100) { // 우라늄이 있고 방사능오염이 100 미만이면
+			if((block==0 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==1 && (_root.blocks[value].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==2 && (_root.blocks[value-2].wv==true || _root.blocks[value-16].wv==true || _root.blocks[value+14].wv==true)) || (block==3 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value+14].wv==true)) || (block==4 && (_root.blocks[value-2].wv==true || _root.blocks[value].wv==true || _root.blocks[value-16].wv==true)) || (block==5 && (_root.blocks[1].wv==true || _root.blocks[15].wv==true)) || (block==6 && (_root.blocks[13].wv==true || _root.blocks[29].wv==true)) || (block==7 && (_root.blocks[211].wv==true || _root.blocks[195].wv==true)) || (block==8 && (_root.blocks[223].wv==true || _root.blocks[209].wv==true))) { // 물이 공급될 때 전기를 생산한다.
+				_root.rpol+=0.02;
+				_root.money+=300;
+				_root.elec+=150;
+				_root.ura--;
+			} // if
+		} // if
+	} else if(_currentframe==9) { // 자신이 물펌프일 때
+		if((block==0 && (_root.blocks[value-2]._currentframe==21 || _root.blocks[value]._currentframe==21 || _root.blocks[value-16]._currentframe==21 || _root.blocks[value+14]._currentframe==21)) || (block==1 && (_root.blocks[value]._currentframe==21 || _root.blocks[value-16]._currentframe==21 || _root.blocks[value+14]._currentframe==21)) || (block==2 && (_root.blocks[value-2]._currentframe==21 || _root.blocks[value-16]._currentframe==21 || _root.blocks[value+14]._currentframe==21)) || (block==3 && (_root.blocks[value-2]._currentframe==21 || _root.blocks[value]._currentframe==21 || _root.blocks[value+14]._currentframe==21)) || (block==4 && (_root.blocks[value-2]._currentframe==21 || _root.blocks[value]._currentframe==21 || _root.blocks[value-16]._currentframe==21)) || (block==5 && (_root.blocks[1]._currentframe==21 || _root.blocks[15]._currentframe==21)) || (block==6 && (_root.blocks[13]._currentframe==21 || _root.blocks[29]._currentframe==21)) || (block==7 && (_root.blocks[211]._currentframe==21 || _root.blocks[195]._currentframe==21)) || (block==8 && (_root.blocks[223]._currentframe==21 || _root.blocks[209]._currentframe==21))) { // 만약 주변에 저수지가 있다면 자신의 wv를 true로 한다.
+			wv=true;
+		} else {
+			wv=false;
+		} // if
+	} else if(_currentframe>=10 && _currentframe<=20) { // 자신이 파이프일 때
+		gotoAndStop(pipe);
+	} else if(_currentframe==22) { // 자신이 하수처리시설일 때
+		if(_root.wpol>0.1) { // 만약 수질오염이 0.1을 초과하면 오염을 0.1씩 줄인다.
+			_root.wpol-=0.1;
+		} else { // 0.1 이하이면 0으로 만든다.
+			_root.wpol=0;
+		} // if
+	} else if(_currentframe==23) { // 자신이 나무일 때
+		if(_root.apol>0.1) { // 만약 대기오염이 0.1을 초과하면 오염을 0.1씩 줄인다.
+			_root.apol-=0.1;
+		} else { // 0.1 이하이면 0으로 만든다.
+			_root.apol=0;
+		} // if
+	} else if(_currentframe==24) { // 자신이 방사능처리시설일 때
+		if(_root.rpol>0.1) { // 만약 방사능오염이 0.1을 초과하면 오염을 0.1씩 줄인다.
+			_root.rpol-=0.1;
+		} else { // 0.1 이하이면 0으로 만든다.
+			_root.rpol=0;
+		} // if
+	} // if
+} // onClipEvent

@@ -1,0 +1,4 @@
+stop();
+fscommand("fullscreen", "true");
+build=-1;
+expl="";

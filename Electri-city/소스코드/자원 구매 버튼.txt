@@ -1,0 +1,13 @@
+on(rollOver) { // 마우스가 들어왔을 경우 설명을 띄운다.
+	_root.expl="음식물 쓰레기: 바이오매스 발전소를 돌리는 데 필요한 자원입니다. 가격: 1t당 10찰";
+} // on
+on(rollOut) { // 마우스가 나갔을 경우 설명을 지운다.
+	_root.expl="";
+} // on
+on(release) { // 눌렸을 경우
+	if(_root.money>=10*parseInt(_root.men.food_temp)) { // food_temp의 숫자를 얻어서 그 액수보다 돈을 많이 갖고 있으면 산다.
+		_root.money-=10*parseInt(_root.men.food_temp);
+		_root.food+=parseInt(_root.men.food_temp);
+		_root.men.food_temp=0;
+	} // if
+} // on

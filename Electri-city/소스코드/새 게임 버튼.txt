@@ -1,0 +1,12 @@
+on(release) { // 눌렸을 경우 모든 변수를 새로 세팅하고 다음 화면으로 넘어간다.
+	gotoAndStop(2);
+	save=0;
+	money=20000;
+	food=0;
+	coal=0;
+	ura=0;
+	wpol=0;
+	apol=0;
+	rpol=0;
+	wind=7.5;
+} // on

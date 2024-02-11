@@ -1,0 +1,3 @@
+on(release) { // 눌렸을 경우 프레임 2로 간다.
+	gotoAndStop(2);
+} // on

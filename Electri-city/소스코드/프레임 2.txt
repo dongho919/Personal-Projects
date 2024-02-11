@@ -1,0 +1,35 @@
+blocks=new Array(225);
+blocks[0]=land1;
+blocks[0].value=1;
+for(i=2; i<=225; i++) { // 무비클립을 복사하는 기능을 한다.
+	temp=land1.duplicateMovieClip("land"+i, i);
+	blocks[i-1]=temp;
+	blocks[i-1]._x=land1._x+15*((i-1)%15)-15*Math.floor((i-1)/15);
+	blocks[i-1]._y=land1._y+7.5*((i-1)%15)+7.5*Math.floor((i-1)/15);
+	blocks[i-1].value=i;
+	blocks[i-1].water=false;
+} // for
+if(save==1) { // 만약 save의 값이 1이면 땅 블록에 관한 정보를 불러온다.
+	for(a=0; a<blocks.length; a++) {
+		blocks[a].gotoAndStop(user.data.blocks_cf[a]);
+		blocks[a].water=user.data.blocks_water[a];
+		blocks[a].wv=user.data.blocks_wv[a];
+	}
+}
+con=new Array(500, 1, false, 10000, 2, true, 20000, 3, false, 40000, 4, false, 65000, 5, true, 100000, 6, true, 150000, 7, true, 450000, 8, true, 5500, 9, true, 1000, 10, true, 3000, 21, false, 20000, 22, false, 12000, 23, false, 35000, 24, false);
+onEnterFrame=function() { // 계속 실행한다.
+	elec_r=Math.round(elec);
+	if(wind>0.5 && wind<=14.5) { // 풍속을 랜덤하게 바꿔 주는 부분
+		wind+=Math.round(Math.random()*100)/100-0.5;
+	} else if(wind<=0.5) { // 풍속이 너무 작을 때 풍속을 크게 해 주는 부분
+		wind+=Math.round(Math.random()*50)/100;
+	} else if(wind>14.5) { // 풍속이 너무 클 때 풍속을 작게 해 주는 부분
+		wind-=Math.round(Math.random()*50)/100;
+	} // if
+	
+	/* 아래부터는 오염 정도를 게이지로 표시하기 위한 액션
+	 */
+	wpol_r_bar._xscale=wpol;
+	apol_r_bar._xscale=apol;
+	rpol_r_bar._xscale=rpol;
+} // function

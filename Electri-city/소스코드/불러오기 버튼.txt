@@ -1,0 +1,16 @@
+on (release) { // 단추가 눌렸을 경우
+	user = SharedObject.getLocal("dongho919_cookie", "/");
+	if (user.data.money!=undefined) { // 저장된 데이터가 존재할 때 불러오고 save를 1로 바꾼다.
+		gotoAndStop(2);
+		save=1;
+		money = user.data.money;
+		elec = user.data.elec;
+		wpol = user.data.wpol;
+		apol = user.data.apol;
+		rpol = user.data.rpol;
+		food = user.data.food;
+		coal = user.data.coal;
+		ura = user.data.ura;
+		wind = user.data.wind;
+	} // if
+} // on
